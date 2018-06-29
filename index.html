@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Nouveautés sur DELABS</title>
+  </head>
+  <body>
+    <h1>les derniers articles publiés sur le Site Dealabs</h1>
+    <div id="parentDiv"></div>
+<script type="text/javascript">
+
+  const cheerio = require('cheerio')
+	var request = require('request');
+
+	request('https://www.dealabs.com/nouveaux', function (error, response, body) {
+	//console.log('body:', body); 
+  const $ = cheerio.load(body)
+
+  //$("div[class='tGrid-cell vAlign--all-t cept-event-deals js-threadList']").each(function(i, elem) {
+
+$("article[class='thread thread--type-list thread--deal']").each(function(i, elem) {
+    titre = $(this).find('a[class="cept-tt thread-link linkPlain thread-title--list"]').attr('title');
+
+    price= $(this).find('span[class="thread-price text--b vAlign--all-tt cept-tp size--all-l size--fromW3-xl"]').text();
+    lienimage= $(this).find('img[class="thread-image width--all-auto height--all-auto imgFrame-img cept-thread-img"]').attr('src')
+    //console.log(lienimage)
+
+     description= $(this).find('div[class="cept-description-container overflow--wrap-break size--all-s size--fromW3-m"]').text()
+
+    temps = $(this).find('span[class="hide--toW3"]').text()
+ 
+
+       document.getElementById("parentDiv").innerHTML += "<div>ARTICLE: "+titre+"</div><div> Prix: "+price+"</div><div>"+ "<a title='"+titre+"' href='"+lienimage+"'>" + "Cliquez ici pour voir la photo</a></div><div>" + description+"</div><div>" + "Pubilé il y 'a" + temps +"</div>"
+       +"<br><br>"
+});
+  
+
+});
+
+</script>
+
+</body>
+</html>
